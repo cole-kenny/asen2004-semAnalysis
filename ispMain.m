@@ -12,6 +12,8 @@ leadingZero = '0';
 
 datasetCounter = 0;
 
+loadingBar = waitbar(0,'Calculating...');
+
 for i = 1:numGroups
     for j = 1:3
         % Setting up a modular filename system
@@ -31,11 +33,11 @@ for i = 1:numGroups
 
         [time,data] = ispDataProcess(filename);
         ispData(datasetCounter) = ispCalc(time,data);
+        
+        waitbar((datasetCounter/(numGroups*3)));
     end
 end
+close(loadingBar);
 
-% SEM = s/(sqrt(n)) where s is std.dev. and n is trials
-
-% 1.96 x SEM -> 95% confidence interval
-% 2.24 x SEM -> 97.5%
-% 2.58 x SEM -> 99%
+% Doing the SEM analysis
+[n950,n975,n990] = semAnalysis(ispData);
