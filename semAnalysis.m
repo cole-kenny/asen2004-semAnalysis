@@ -1,4 +1,4 @@
-function [n950,n975,n990] = semAnalysis(ispData)
+function [n950,n975,n990,answerMatrix] = semAnalysis(ispData)
 
 %% Throw out really bad data
 i = 1;
@@ -27,13 +27,25 @@ title('Standard Deviation vs. Sample Number')
 xlabel('Number of Samples')
 ylabel('Running Standard Deviation')
 
+% Plotting running SEM
+figure(2)
+plot(trials,sem)
+title('SEM vs. Sample Number')
+xlabel('Number of Samples')
+ylabel('Running SEM')
+
 %% Finding the required trials for defined confidence intervals
+
+% 1.96 x SEM < 0.05*mean -> 95% confidence interval
+% 2.24 x SEM < 0.025*mean -> 97.5%
+% 2.58 x SEM < 0.01*mean -> 99%
+
 % 95% confidence
 for i = 2:length(sem)
     semRange = 1.96 * sem(i);
     meanRange = (0.05*m(i));
     if semRange < meanRange
-        n950 = i
+        n950 = i;
         break;
     end
 end
@@ -43,7 +55,7 @@ for i = 2:length(sem)
     semRange = 2.24 * sem(i);
     meanRange = (0.025*m(i));
     if semRange < meanRange
-        n975 = i
+        n975 = i;
         break;
     end
 end
@@ -53,12 +65,11 @@ for i = 2:length(sem)
     semRange = 2.58 * sem(i);
     meanRange = (0.01*m(i));
     if semRange < meanRange
-        n990 = i
+        n990 = i;
         break;
     end
 end
 
-% 1.96 x SEM < 0.05*mean -> 95% confidence interval
-% 2.24 x SEM < 0.025*mean -> 97.5%
-% 2.58 x SEM < 0.01*mean -> 99%
+answerMatrix = [trials;ispData;m;s;sem];
+
 end

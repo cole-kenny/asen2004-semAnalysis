@@ -1,4 +1,4 @@
-% Main scriptfor funning the ISP Standard Error Analysis
+% Main script for funning the ISP Standard Error Analysis
 
 clear; close all; clc;
 
@@ -40,4 +40,4 @@ end
 close(loadingBar);
 
 % Doing the SEM analysis
-[n950,n975,n990] = semAnalysis(ispData);
+[n950,n975,n990,answerMatrix] = semAnalysis(ispData);
