@@ -14,22 +14,22 @@ s = zeros(1,length(ispData));
 m = s;
 sem = s;
 for i = 1:length(ispData)
-    s(i) = std(ispData(1:i));
     m(i) = mean(ispData(1:i));
+    s(i) = std(ispData(1:i));
     sem(i) = s(i) / sqrt(i);
 end
 
 % Plotting running standard deviation
 trials = 1:length(ispData);
 figure(1)
-plot(trials,s)
+plot(trials,s,'o')
 title('Standard Deviation vs. Sample Number')
 xlabel('Number of Samples')
 ylabel('Running Standard Deviation')
 
 % Plotting running SEM
 figure(2)
-plot(trials,sem)
+plot(trials,sem,'o')
 title('SEM vs. Sample Number')
 xlabel('Number of Samples')
 ylabel('Running SEM')

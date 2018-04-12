@@ -12,8 +12,8 @@ testTime = (1/freq)*lengthData;
 time = linspace(0,testTime,lengthData);
 
 % Plotting the raw data
-% figure(1)
-% plot(time,data)
+figure(1)
+plot(time,data)
 
 %% Cleaning up the data so it only includes the impulse
 % Starting from the front for the starting point
@@ -33,25 +33,25 @@ for j = lengthData:-1:1
     end
 end
 
-% hold on
-% plot(firstT,first,'ko')
-% plot(lastT,last,'ko')
-% title('Raw Data with Impulse Start and End Points')
+hold on
+plot(firstT,first,'ko')
+plot(lastT,last,'ko')
+title('Raw Data with Impulse Start and End Points')
 
 % Seperating the impulse from the data
 data = data(i:j);
 time = time(i:j);
 % Plotting just the impluse
-% figure(2)
-% plot(time,data)
+figure(2)
+plot(time,data)
 
 %% Drawing the lower limit line (lll)
 lengthData = length(data);
 lll = linspace(data(1),data(end),lengthData);
-% hold on
-% figure(2)
-% plot(time,lll,'b--')
-% title('Processed Data for the Lower Limit Line')
+hold on
+figure(2)
+plot(time,lll,'b--')
+title('Processed Data for the Lower Limit Line')
 
 %% Making anything below the lll 'positive'
 for i = 1:lengthData
@@ -61,19 +61,19 @@ for i = 1:lengthData
     end
 end
 
-% figure(3)
-% hold on
-% plot(time,data)
-% plot(time,lll,'b--')
-% title('Making Everything ''Positive''')
+figure(3)
+hold on
+plot(time,data)
+plot(time,lll,'b--')
+title('Making Everything ''Positive''')
 
 %% Re-Zeroing the bottom axis
 for i = 1:lengthData
     data(i) = data(i) + abs(lll(i));
 end
 
-% figure(4)
-% plot(time,data)
-% title('Modified Data to ''Flatten'' the Lower Axis')
+figure(4)
+plot(time,data)
+title('Modified Data to ''Flatten'' the Lower Axis')
 
 end
