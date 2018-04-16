@@ -3,6 +3,7 @@ SEM analysis for the water bottle rocket lab static test data.
 
 ## ispMain.m
 Controlling script. Handles function calls as well as modularly opening the datasets.
+Additionally manages function plotting and formatting.
 
 ## ispDataProcess.m
 Processes the individual datasets to remove downtime and account for errors in the test equipment.
