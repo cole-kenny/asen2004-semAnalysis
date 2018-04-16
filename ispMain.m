@@ -25,7 +25,7 @@ for i = 1:numGroups
             groupCode = groupNumber;
         end
         % Iterating through the time slots
-            timeCode = labTimes(j,:);
+        timeCode = labTimes(j,:);
         filename2 = '_statictest1.txt';
         % Putting the whole filename together
         filename = strcat(filename1,groupCode,underscore,timeCode,filename2);
@@ -40,4 +40,66 @@ end
 close(loadingBar);
 
 % Doing the SEM analysis
-[n950,n975,n990,answerMatrix] = semAnalysis(ispData);
+[n950,n975,n990,answerMatrix,semTheoMat] = semAnalysis(ispData);
+
+fprintf('Trials required for 95%% confidence: %i\n',n950);
+fprintf('Trials required for 97.5%% confidence: %i\n',n975);
+fprintf('Trials required for 99%% confidence: %i\n',n990);
+
+%% Figuring out the running mean bounds
+trials = answerMatrix(1,:);
+isp = answerMatrix(2,:);
+m = answerMatrix(3,:);
+    m(1) = isp(1);
+    m(2) = isp(2);
+s = answerMatrix(4,:);
+sem = answerMatrix(5,:);
+err950 = (0.05.*m + m) - (m - 0.05.*m);
+err975 = (0.025.*m + m) - (m - 0.025.*m);
+err990 = (0.01.*m + m) - (m - 0.01.*m);
+
+%% Plotting ALL the things!!
+% Mean with 95% confidence
+figure
+subplot(1,3,1)
+errorbar(trials,m,err950)
+hold on
+plot(trials,isp)
+title('95% Confidence in the Mean')
+xlabel('Number of Trials')
+ylabel('Calculated Isp')
+legend('Mean Isp +/- 5%','Calculated Isp')
+
+% Mean with 97.5% confidence
+subplot(1,3,2)
+errorbar(trials,m,err975)
+hold on
+plot(trials,isp)
+title('97.5% Confidence in the Mean')
+xlabel('Number of Trials')
+ylabel('Calculated Isp')
+legend('Mean Isp +/- 2.5%','Calculated Isp')
+
+% Mean with 99% confidence
+subplot(1,3,3)
+errorbar(trials,m,err990)
+hold on
+plot(trials,isp)
+title('99% Confidence in the Mean')
+xlabel('Number of Trials')
+ylabel('Calculated Isp')
+legend('Mean Isp +/- 1%','Calculated Isp')
+
+% SEM v. Trials
+figure
+plot(trials,sem,'o-')
+title('Standard Error vs. Number of Trails')
+xlabel('Trail Number')
+ylabel('Standard Error of the Mean')
+% Plotting theoretical SEM ifthere were more trials
+hold on
+nTheo = 1:length(semTheoMat);
+nTheo(1:trials(end)) = [];
+semTheoMat(1:trials(end)) = [];
+plot(nTheo,semTheoMat,'o--')
+legend('Calculated SEM','Theoretical SEM')

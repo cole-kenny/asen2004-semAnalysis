@@ -1,4 +1,7 @@
-function [n950,n975,n990,answerMatrix] = semAnalysis(ispData)
+function [n950,n975,n990,answerMatrix,semTheoMat] = semAnalysis(ispData)
+
+%% Flip the order (for testing)
+ispData = flip(ispData);
 
 %% Throw out really bad data
 i = 1;
@@ -14,25 +17,32 @@ s = zeros(1,length(ispData));
 m = s;
 sem = s;
 for i = 1:length(ispData)
-    m(i) = mean(ispData(1:i));
-    s(i) = std(ispData(1:i));
+    ispDataSub = ispData(1:i);
+    m(i) = mean(ispDataSub);
+    s(i) = std(ispDataSub);
     sem(i) = s(i) / sqrt(i);
 end
 
+% Removing the first 2 calculated point
+    % Since mean, std, and sem are only valid for n > 2
+m(1:2) = [];
+s(1:2) = [];
+sem(1:2) = [];
+
 % Plotting running standard deviation
-trials = 1:length(ispData);
-figure(1)
-plot(trials,s,'o')
-title('Standard Deviation vs. Sample Number')
-xlabel('Number of Samples')
-ylabel('Running Standard Deviation')
+trials = 1:length(sem);
+% figure(1)
+% plot(trials,s,'o')
+% title('Standard Deviation vs. Sample Number')
+% xlabel('Number of Samples')
+% ylabel('Running Standard Deviation')
 
 % Plotting running SEM
-figure(2)
-plot(trials,sem,'o')
-title('SEM vs. Sample Number')
-xlabel('Number of Samples')
-ylabel('Running SEM')
+% figure(2)
+% plot(trials,sem,'o')
+% title('SEM vs. Sample Number')
+% xlabel('Number of Samples')
+% ylabel('Running SEM')
 
 %% Finding the required trials for defined confidence intervals
 
@@ -40,12 +50,17 @@ ylabel('Running SEM')
 % 2.24 x SEM < 0.025*mean -> 97.5%
 % 2.58 x SEM < 0.01*mean -> 99%
 
+% Initialize n values
+n950 = -1;
+n975 = -1;
+n990 = -1;
+
 % 95% confidence
 for i = 2:length(sem)
     semRange = 1.96 * sem(i);
     meanRange = (0.05*m(i));
     if semRange < meanRange
-        n950 = i;
+        n950 = i + 2;
         break;
     end
 end
@@ -55,7 +70,7 @@ for i = 2:length(sem)
     semRange = 2.24 * sem(i);
     meanRange = (0.025*m(i));
     if semRange < meanRange
-        n975 = i;
+        n975 = i + 2;
         break;
     end
 end
@@ -65,10 +80,29 @@ for i = 2:length(sem)
     semRange = 2.58 * sem(i);
     meanRange = (0.01*m(i));
     if semRange < meanRange
-        n990 = i;
+        n990 = i + 2;
         break;
     end
 end
+
+% Calculating now many trials are necessary to get to 99% confidence
+% Assumes mean and std remain the same...
+sTheo = s(end);
+semTheo = sem(end);
+n = trials(end) +1;
+while 2.58 * semTheo > (0.01*m(end))
+    semTheo = sTheo / sqrt(n);
+    semTheoMat(n) = semTheo;
+    n = n+1;
+end
+% Setting the required n value to the calculated theoretical n
+n990 = n;
+
+%% Appending zeros so the matricies are the same length
+m = [0,0,m];
+s = [0,0,s];
+sem = [0,0,sem];
+trials = [0,0,trials];
 
 answerMatrix = [trials;ispData;m;s;sem];
 
