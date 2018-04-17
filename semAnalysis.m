@@ -23,14 +23,16 @@ for i = 1:length(ispData)
     sem(i) = s(i) / sqrt(i);
 end
 
+trials = 1:length(sem);
+
 % Removing the first 2 calculated point
     % Since mean, std, and sem are only valid for n > 2
 m(1:2) = [];
 s(1:2) = [];
 sem(1:2) = [];
+trials(1:2) = [];
 
 % Plotting running standard deviation
-trials = 1:length(sem);
 % figure(1)
 % plot(trials,s,'o')
 % title('Standard Deviation vs. Sample Number')
@@ -89,7 +91,7 @@ end
 % Assumes mean and std remain the same...
 sTheo = s(end);
 semTheo = sem(end);
-n = trials(end) +1;
+n = trials(end) + 1;
 while 2.58 * semTheo > (0.01*m(end))
     semTheo = sTheo / sqrt(n);
     semTheoMat(n) = semTheo;
@@ -99,10 +101,11 @@ end
 n990 = n;
 
 %% Appending zeros so the matricies are the same length
-m = [0,0,m];
-s = [0,0,s];
-sem = [0,0,sem];
-trials = [0,0,trials];
+% m = [0,0,m];
+% s = [0,0,s];
+% sem = [0,0,sem];
+% trials = [0,0,trials];
+ispData(1:2) = [];
 
 answerMatrix = [trials;ispData;m;s;sem];
 

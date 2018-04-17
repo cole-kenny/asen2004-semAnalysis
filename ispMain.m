@@ -96,7 +96,7 @@ plot(trials,sem,'o-')
 title('Standard Error vs. Number of Trails')
 xlabel('Trail Number')
 ylabel('Standard Error of the Mean')
-% Plotting theoretical SEM ifthere were more trials
+% Plotting theoretical SEM if there were more trials
 hold on
 nTheo = 1:length(semTheoMat);
 nTheo(1:trials(end)) = [];
