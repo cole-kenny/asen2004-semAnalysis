@@ -18,7 +18,7 @@ time = linspace(0,testTime,lengthData);
 %% Cleaning up the data so it only includes the impulse
 % Starting from the front for the starting point
 for i = 1:lengthData
-    if data(i) - (data(i+1)) > 0.1
+    if data(i) - (data(i+1)) > 2        %0.1
         first = data(i);
         firstT = time(i);
         break;
@@ -26,7 +26,7 @@ for i = 1:lengthData
 end
 % Starting from the back for the ending point
 for j = lengthData:-1:1
-    if data(j) - (data(j-10)) > 5
+    if data(j) - (data(j-1)) > 0.7         % j-10; 5
         last = data(j);
         lastT = time(j);
         break;

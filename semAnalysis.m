@@ -1,7 +1,7 @@
 function [n950,n975,n990,answerMatrix,semTheoMat] = semAnalysis(ispData)
 
 %% Flip the order (for testing)
-ispData = flip(ispData);
+%ispData = flip(ispData);
 
 %% Throw out really bad data
 i = 1;
@@ -96,9 +96,20 @@ while 2.58 * semTheo > (0.01*m(end))
     semTheo = sTheo / sqrt(n);
     semTheoMat(n) = semTheo;
     n = n+1;
+    sem990 = semTheo;
 end
 % Setting the required n value to the calculated theoretical n
 n990 = n;
+
+%% Trying to use polyfit to fit a line to the SEM data
+% p = polyfit(trials,sem,5);
+% 
+% figure
+% plot(trials,sem)
+% hold on
+% trialsPoly = [1:50];
+% semPoly = polyval(p,trialsPoly);
+% plot(trialsPoly,semPoly)
 
 %% Appending zeros so the matricies are the same length
 % m = [0,0,m];

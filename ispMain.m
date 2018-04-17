@@ -59,6 +59,13 @@ err975 = (0.025.*m + m) - (m - 0.025.*m);
 err990 = (0.01.*m + m) - (m - 0.01.*m);
 
 %% Plotting ALL the things!!
+% Sample thrust curve
+[time,data] = ispDataProcess('files/Group05_08am_statictest1.txt');
+figure
+plot(time,data)
+title('Sample Thrust Plot')
+xlabel('Time (s)')
+ylabel('Thrust (lbs)')
 % Mean with 95% confidence
 figure
 subplot(1,3,1)
@@ -69,7 +76,6 @@ title('95% Confidence in the Mean')
 xlabel('Number of Trials')
 ylabel('Calculated Isp')
 legend('Mean Isp +/- 5%','Calculated Isp')
-
 % Mean with 97.5% confidence
 subplot(1,3,2)
 errorbar(trials,m,err975)
@@ -79,7 +85,6 @@ title('97.5% Confidence in the Mean')
 xlabel('Number of Trials')
 ylabel('Calculated Isp')
 legend('Mean Isp +/- 2.5%','Calculated Isp')
-
 % Mean with 99% confidence
 subplot(1,3,3)
 errorbar(trials,m,err990)
@@ -89,7 +94,6 @@ title('99% Confidence in the Mean')
 xlabel('Number of Trials')
 ylabel('Calculated Isp')
 legend('Mean Isp +/- 1%','Calculated Isp')
-
 % SEM v. Trials
 figure
 plot(trials,sem,'o-')
